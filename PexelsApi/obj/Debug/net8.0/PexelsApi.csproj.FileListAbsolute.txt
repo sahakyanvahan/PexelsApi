@@ -31,3 +31,10 @@
 /Users/vahan/Projects/PexelsApi/PexelsApi/obj/Debug/net8.0/PexelsApi.pdb
 /Users/vahan/Projects/PexelsApi/PexelsApi/obj/Debug/net8.0/PexelsApi.genruntimeconfig.cache
 /Users/vahan/Projects/PexelsApi/PexelsApi/obj/Debug/net8.0/ref/PexelsApi.dll
+/Users/vahan/Projects/PexelsApi/PexelsApi/obj/Debug/net8.0/PexelsApi.sourcelink.json
+/Users/vahan/Projects/PexelsApi/PexelsApi/bin/Debug/net8.0/AutoFixture.dll
+/Users/vahan/Projects/PexelsApi/PexelsApi/bin/Debug/net8.0/AutoFixture.AutoNSubstitute.dll
+/Users/vahan/Projects/PexelsApi/PexelsApi/bin/Debug/net8.0/Castle.Core.dll
+/Users/vahan/Projects/PexelsApi/PexelsApi/bin/Debug/net8.0/Fare.dll
+/Users/vahan/Projects/PexelsApi/PexelsApi/bin/Debug/net8.0/Newtonsoft.Json.dll
+/Users/vahan/Projects/PexelsApi/PexelsApi/bin/Debug/net8.0/NSubstitute.dll

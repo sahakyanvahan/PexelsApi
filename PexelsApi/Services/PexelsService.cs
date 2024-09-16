@@ -1,60 +1,51 @@
-using System.Net.Http.Headers;
-using System.Text.Json;
-using PexelsApi.Models;
+using Newtonsoft.Json;
+using PexelsApi.ApiContracts;
 
 namespace PexelsApi.Services;
 
-public class PexelsService : IPexelsService
+public class PexelsService(HttpClient httpClient) : IPexelsService
 {
-    private readonly IConfiguration _configuration;
-    private readonly HttpClient _httpClient;
-    private readonly string _pexelsApiKey;
-
-    public PexelsService(IConfiguration configuration)
-    {
-        _configuration = configuration;
-        _httpClient = new HttpClient();
-    }
-
-    public async Task<List<ImageModel>> GetCuratedImagesAsync(int page, int perPage)
+    public async Task<PhotoResponse?> GetCuratedImagesAsync(int page, int perPage)
     {
         try
         {
-            var url = $"https://api.pexels.com/v1/curated?page={page}&per_page={perPage}";
-            
-            var pexelsApiKey = _configuration["PexelsApiKey"];
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", pexelsApiKey);
-            
-            var response = await _httpClient.GetAsync(url);
-
+            var response = await httpClient.GetAsync($"v1/curated?page={page}&per_page={perPage}");
             if (response.IsSuccessStatusCode)
             {
                 var jsonResponse = await response.Content.ReadAsStringAsync();
-                var imageResponse = JsonSerializer.Deserialize<ImageResponse>(jsonResponse, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-                return imageResponse?.Photos ?? new List<ImageModel>();
+                var photoResponse = JsonConvert.DeserializeObject<PhotoResponse>(jsonResponse);
+                return photoResponse;
             }
-
-            return new List<ImageModel>();
+            else
+            {
+                throw new HttpRequestException("Failed to fetch photos.");
+            }
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.WriteLine(e);
-            throw;
+            throw new Exception("An unexpected error occurred. Please try again later.");
         }
     }
 
-    public async Task<List<VideoModel>> GetCuratedVideosAsync(int page, int perPage)
+    public async Task<VideoResponse?> GetPopularVideosAsync(int page, int perPage)
     {
-        var url = $"https://api.pexels.com/videos/curated?page={page}&per_page={perPage}";
-        var response = await _httpClient.GetAsync(url);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            var videoResponse = JsonSerializer.Deserialize<VideoResponse>(jsonResponse, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-            return videoResponse?.Videos ?? new List<VideoModel>();
+            var response = await httpClient.GetAsync($"v1/videos/popular?page={page}&per_page={perPage}");
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var videoResponse = JsonConvert.DeserializeObject<VideoResponse>(jsonResponse);
+                return videoResponse;
+            }
+            else
+            {
+                throw new HttpRequestException("Failed to fetch videos.");
+            }
         }
-
-        return new List<VideoModel>();
+        catch (Exception)
+        {
+            throw new Exception("An unexpected error occurred. Please try again later.");
+        }
     }
 }

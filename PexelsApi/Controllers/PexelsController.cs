@@ -5,26 +5,19 @@ namespace PexelsApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PexelsController: ControllerBase
+public class PexelsController(IPexelsService pexelsService) : ControllerBase
 {
-    private readonly IPexelsService _pexelsService;
-
-    public PexelsController(IPexelsService pexelsService)
-    {
-        _pexelsService = pexelsService;
-    }
-
     [HttpGet("images")]
     public async Task<IActionResult> GetCuratedImages(int page = 1, int perPage = 15)
     {
-        var images = await _pexelsService.GetCuratedImagesAsync(page, perPage);
+        var images = await pexelsService.GetCuratedImagesAsync(page, perPage);
         return Ok(images);
     }
 
     [HttpGet("videos")]
     public async Task<IActionResult> GetCuratedVideos(int page = 1, int perPage = 15)
     {
-        var videos = await _pexelsService.GetCuratedVideosAsync(page, perPage);
+        var videos = await pexelsService.GetPopularVideosAsync(page, perPage);
         return Ok(videos);
     }
 }

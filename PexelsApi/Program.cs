@@ -1,4 +1,6 @@
+using Microsoft.Extensions.Options;
 using PexelsApi.Services;
+using PexelsApi.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,9 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddTransient<IPexelsService, PexelsService>();
 
+builder.Services.Configure<PexelsSettings>(builder.Configuration.GetSection("Pexels"));
+
+builder.Services.AddHttpClient<IPexelsService, PexelsService>()
+    .ConfigureHttpClient((serviceProvider, client) =>
+    {
+        var pexelsSettings = serviceProvider.GetRequiredService<IOptions<PexelsSettings>>().Value;
+        client.BaseAddress = new Uri("https://api.pexels.com/");
+        client.DefaultRequestHeaders.Add("Authorization", $"{pexelsSettings.ApiKey}");
+    });
 
 var app = builder.Build();
 
@@ -21,31 +31,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
 app.MapControllers();
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
-
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

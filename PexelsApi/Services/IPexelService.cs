@@ -1,10 +1,10 @@
-using PexelsApi.Models;
+using PexelsApi.ApiContracts;
 
 namespace PexelsApi.Services;
 
 public interface IPexelsService
 {
-    Task<List<ImageModel>> GetCuratedImagesAsync(int page, int perPage);
+    Task<PhotoResponse?> GetCuratedImagesAsync(int page, int perPage);
 
-    Task<List<VideoModel>> GetCuratedVideosAsync(int page, int perPage);
+    Task<VideoResponse?> GetPopularVideosAsync(int page, int perPage);
 }
