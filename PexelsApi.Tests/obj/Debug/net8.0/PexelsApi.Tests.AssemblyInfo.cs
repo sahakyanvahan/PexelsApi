@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PexelsApi.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b389ed453661524f3f0457444e0bfae4e3831d67")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e8feea1288cd65cd9085f3d7900095d70f14a36e")]
 [assembly: System.Reflection.AssemblyProductAttribute("PexelsApi.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PexelsApi.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
